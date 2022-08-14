@@ -1,21 +1,6 @@
 const { nanoid } = require('nanoid');
 const books = require('./books');
 
-// const search = (key, data) => {
-//   for (let i = 0; i < data.length; i++) {
-//     if (data[i].name.toLowerCase() === key.toLowerCase()) {
-//       return data[i];
-//     } if (key === 1) {
-//       data[i]
-//     }
-//     (data[i].finished === trueFalse) {
-//       return data[i];
-//     } if (data[i].reading === trueFalse) {
-//       return data[i];
-//     }
-//   }
-// };
-
 const addBookHandler = (request, h) => {
   const {
     name, year, author, summary, publisher, pageCount, readPage, reading,
