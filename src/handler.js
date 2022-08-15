@@ -7,8 +7,8 @@ const addBookHandler = (request, h) => {
   } = request.payload;
 
   const id = nanoid(16);
-  const createdAt = new Date().toISOString();
-  const updatedAt = createdAt;
+  const insertedAt = new Date().toISOString();
+  const updatedAt = insertedAt;
   const finished = readPage === pageCount;
 
   if (!name) {
@@ -40,7 +40,7 @@ const addBookHandler = (request, h) => {
     readPage,
     finished,
     reading,
-    createdAt,
+    insertedAt,
     updatedAt,
   };
 
@@ -69,23 +69,34 @@ const addBookHandler = (request, h) => {
 };
 
 const getAllBooksHandler = (request, h) => {
-  const { name } = request.query;
-  if (name) {
-    const result = books.find((book) => book.name.toLowerCase() === name.toLowerCase());
-    console.log(result);
-    return {
+  const { key } = request.query;
+  if (key) {
+    const result = books.find((book) => book.name.toLowerCase() === key.toLowerCase());
+    const response = h.response({
       status: 'success',
       data: {
-        result,
+        books: result.map((res) => ({
+          id: res.id,
+          name: res.name,
+          publisher: res.publisher,
+        })),
       },
-    };
+    });
+    response.code(200);
+    return response;
   }
-  return {
+  const response = h.response({
     status: 'success',
     data: {
-      books,
+      books: books.map((book) => ({
+        id: book.id,
+        name: book.name,
+        publisher: book.publisher,
+      })),
     },
-  };
+  });
+  response.code(200);
+  return response;
 };
 
 const getBookByIdHandler = (request, h) => {
